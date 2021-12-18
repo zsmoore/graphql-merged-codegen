@@ -1,0 +1,34 @@
+{
+  "name": "graphql-merged-codegen",
+  "version": "0.0.1",
+  "description": "Generate merged types for based on GQL input files",
+  "main": "index.js",
+  "scripts": {
+    "run": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint ./lib/**",
+    "fix-lint": "npx eslinit ./lib/** --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zsmoore/graphql-merged-codegen.git"
+  },
+  "author": "Zachary Moore",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/zsmoore/graphql-merged-codegen/issues"
+  },
+  "homepage": "https://github.com/zsmoore/graphql-merged-codegen#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.5.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "graphql": "^16.2.0"
+  }
+}
