@@ -22,6 +22,13 @@ type Stat {
     retweets: Int
     responses: Int
     user: User
+    test: Test
+}
+
+enum Test {
+    A,
+    B,
+    C
 }
 
 type Notification {

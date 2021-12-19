@@ -13,6 +13,7 @@ query example($id: ID!) {
             user {
                 first_name
             }
+            test
         }
     }
 }

@@ -24,6 +24,13 @@ export type Stat = {
   likes: Maybe<Int>;
   retweets: Maybe<Int>;
   user: Maybe<User>;
+  test: Maybe<Test>;
 };
 
 export type Int = number;
+
+export enum Test {
+  A,
+  B,
+  C,
+};

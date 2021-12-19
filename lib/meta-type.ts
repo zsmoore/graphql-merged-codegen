@@ -32,17 +32,24 @@ class MetaType {
 
   scalarValue: string | null;
 
+  enumValues: string[] | null;
+
   areInnerTypesResolved: boolean;
 
-  constructor(typeName: string, scalarValue: string | null = null) {
+  constructor(
+    typeName: string,
+    scalarValue: string | null = null,
+    enumValues: string[] | null = null,
+  ) {
     this.typeName = typeName;
     this.fields = new Map();
     this.scalarValue = tryParseScalar(scalarValue);
-    this.areInnerTypesResolved = scalarValue != null;
+    this.areInnerTypesResolved = scalarValue != null || enumValues != null;
+    this.enumValues = enumValues;
   }
 
   addFieldDef(field: FieldRepresentation) {
-    if (this.scalarValue != null) {
+    if (this.scalarValue != null || this.enumValues != null) {
       console.log('adding field to scalar');
       process.exit(1);
     }
@@ -56,6 +63,14 @@ class MetaType {
   generateTypeRepresentation(): string {
     if (this.scalarValue != null) {
       return `export type ${this.typeName} = ${this.scalarValue};`;
+    }
+    if (this.enumValues != null) {
+      let representation = `export enum ${this.typeName} {`;
+      this.enumValues.forEach((value) => {
+        representation += `\n  ${value},`;
+      });
+      representation += '\n};';
+      return representation;
     }
     let representation = `export type ${this.typeName} = {`;
     this.fields.forEach((field) => {
