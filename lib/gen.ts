@@ -254,6 +254,13 @@ function createMetaTypesForSelections(
         } else if (currentType instanceof GraphQLNonNull
           && currentType.ofType instanceof GraphQLObjectType) {
           inspectGraphQLTypeAndSelectionSet(allTypes, node, currentType.ofType);
+        } else if (currentType instanceof GraphQLList) {
+          if (currentType.ofType instanceof GraphQLNonNull
+            && currentType.ofType.ofType instanceof GraphQLObjectType) {
+            inspectGraphQLTypeAndSelectionSet(allTypes, node, currentType.ofType.ofType);
+          } else if (currentType.ofType instanceof GraphQLObjectType) {
+            inspectGraphQLTypeAndSelectionSet(allTypes, node, currentType.ofType);
+          }
         }
       },
     }));
