@@ -23,6 +23,7 @@ interface FieldRepresentation {
   /* eslint-disable no-use-before-define */
   fieldType: MetaType,
   /* eslint-enable no-use-before-define */
+  isList: boolean,
 }
 
 class MetaType {
@@ -74,7 +75,11 @@ class MetaType {
     }
     let representation = `export type ${this.typeName} = {`;
     this.fields.forEach((field) => {
-      representation += `\n  ${field.fieldName}: Maybe<${field.fieldType.typeName}>;`;
+      if (field.isList) {
+        representation += `\n  ${field.fieldName}: Maybe<Array<${field.fieldType.typeName}>>;`;
+      } else {
+        representation += `\n  ${field.fieldName}: Maybe<${field.fieldType.typeName}>;`;
+      }
     });
     representation += '\n};';
     return representation;
