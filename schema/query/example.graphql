@@ -1,0 +1,27 @@
+query example2($id: ID!) {
+    Tweet(id: $id) {
+        ...tweet
+    }
+}
+
+fragment author on User {
+    last_name
+}
+
+fragment stats on Stat {
+    views
+    likes
+    retweets
+}
+
+fragment tweet on Tweet {
+    id
+    body
+    date
+    Author {
+        ...author
+    }
+    Stats {
+        ...stats
+    }
+}
