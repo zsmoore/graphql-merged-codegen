@@ -19,7 +19,7 @@ import {
   GraphQLNonNull,
   GraphQLScalarType,
   GraphQLEnumType,
-  Kind,
+  GraphQLList,
 } from 'graphql';
 import { Maybe } from 'graphql/jsutils/Maybe';
 /* eslint-disable import/extensions */
@@ -197,8 +197,19 @@ function inspectGraphQLTypeAndSelectionSet(
         process.exit(1);
       }
 
-      const innerType: GraphQLOutputType = objectField.type instanceof GraphQLNonNull
-        ? objectField.type.ofType : objectField.type;
+      let innerType = objectField.type;
+      let isList = false;
+      if (innerType instanceof GraphQLNonNull) {
+        innerType = innerType.ofType;
+        if (innerType instanceof GraphQLList) {
+          innerType = innerType.ofType;
+          isList = true;
+        }
+      } else if (innerType instanceof GraphQLList) {
+        innerType = innerType.ofType instanceof GraphQLNonNull
+          ? innerType.ofType.ofType : innerType.ofType;
+        isList = true;
+      }
       if (innerType instanceof GraphQLObjectType) {
         if (!allTypes.has(innerType.name)) {
           allTypes.set(innerType.name, new MetaType(innerType.name));
@@ -216,6 +227,7 @@ function inspectGraphQLTypeAndSelectionSet(
         metaType?.addFieldDef({
           fieldName: objectField.name,
           fieldType: allTypes.get(innerType.name) as MetaType,
+          isList,
         });
       }
     }
@@ -263,6 +275,7 @@ function reWriteType(
     newType.addFieldDef({
       fieldName: field.fieldName,
       fieldType: allTypes.get(field.fieldType.typeName) as MetaType,
+      isList: field.isList,
     });
   });
   newType.markInnerTypesAsResolved();

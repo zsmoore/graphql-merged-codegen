@@ -23,7 +23,7 @@ export type Stat = {
   views: Maybe<Int>;
   likes: Maybe<Int>;
   retweets: Maybe<Int>;
-  user: Maybe<User>;
+  user: Maybe<Array<User>>;
   test: Maybe<Test>;
 };
 
