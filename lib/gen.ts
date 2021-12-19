@@ -207,13 +207,8 @@ function inspectGraphQLTypeAndSelectionSet(
         allTypes.set(innerType.name, new MetaType(innerType.name, innerType.name));
       } else if (innerType instanceof GraphQLEnumType) {
         if (!allTypes.has(innerType.name)) {
-          const type = new MetaType(innerType.name);
-          innerType.getValues().forEach((enumValue) => {
-            type.addFieldDef({
-              fieldName: enumValue.name,
-              fieldType: new MetaType(enumValue.name),
-            });
-          });
+          const enumValues = innerType.getValues().map((enumValue) => enumValue.name);
+          allTypes.set(innerType.name, new MetaType(innerType.name, null, enumValues));
         }
       }
 
